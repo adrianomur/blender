@@ -1,0 +1,107 @@
+{
+    "Blender bl_info":{
+        "scope": "python",
+        "prefix": ["bl-info"],
+        "body":[
+            "bl_info = {",
+            "\t\"name\": \"${1:$WORKSPACE_NAME}\",",
+            "\t\"description\": \"${2:$WORKSPACE_NAME addon}\",",
+            "\t\"author\": \"${3:Kolupsy}\",",
+            "\t\"version\": \"(${4:0, 1})\",",
+            "\t\"blender\": \"(${5:4, 0, 0})\",",
+            "\t\"location\": \"${6:Where to find this addon in the user interface}\",",
+            "\t\"warning\": \"${7}\",",
+            "\t\"doc_url\": \"${8}\",",
+            "\t\"tracker_url\": \"${9}\",",
+            "\t\"support\": \"${10|COMMUNITY,OFFICIAL,TESTING|}\",",
+            "\t\"category\": \"${11|3D View,Add Mesh,Add Curve,Animation,Compositing,Development,Game Engine,Import-Export,Lighting,Material,Mesh,Node,Object,Paint,Physics,Render,Rigging,Scene,Sequencer,System,Text Editor,UV,User Interface|}\",",
+            "}\n$0"
+        ]
+    },
+    "Blender Auto-Load Setup":{
+        "scope": "python",
+        "prefix": ["bl-al"],
+        "body":[
+            "from . import auto_load as al",
+            "${1:#Preload Modles}",
+            "",
+            "al.configure(",
+            "\tprefix=\"${2:ADDON}\",", 
+            "\tpackage=__package__,",
+            "\tversion_str=f'Addon: {bl_info[\"version\"]}',",
+            "\tdebug=${3|True,False|},",
+            ")",
+            "",
+            "al.import_modules(__file__, __package__)",
+            "al.register_addon()\n$0"
+        ]
+    },
+    "Auto-Load Operator":{
+		"prefix": ["al-op"],
+		"body": [
+			"@al.register_operator",
+			"class ${1:NewFunction}(al.Operator):",
+			"\t${2:#Properties}",
+			"\tdef run(self, context: bt.Context):\n\t\t$0"
+		]
+	},
+	"Auto-Load Modal Operator":{
+		"prefix": ["al-mod"],
+		"body": [
+			"@al.register_operator",
+			"class ${1:NewModal}(al.Operator):",
+			"\t${2:#Properties}",
+			"\tdef invoke(self, context: bt.Context, event: bt.Event):",
+			"\t\twm = al.get_wm()",
+			"\t\twm.modal_handler_add(self)$3",
+			"\t\treturn {'RUNNING_MODAL'}",
+			"",
+			"\tdef modal(self, context: bt.Context, event: bt.Event):",
+			"\t\tif event.type in {'ESC', 'RIGHTMOUSE'}:",
+			"\t\t\treturn {'CANCELLED'}$0",
+			"\t\treturn {'RUNNING_MODAL'}",
+			""
+		]
+	},
+    "Auto-Load Property Definition":{
+        "prefix": ["al-prop"],
+        "body": [
+            "@al.register_property(${1:WindowManager})",
+            "class ${2:NewProperty}(${3:al.IntProperty}):",
+            "\tobj: ${1}",
+            "",
+            "\tdef __init__(self):",
+            "\t\treturn super().__init__$0",
+            "",
+            "\t@classmethod",
+            "\tdef get(cls, parent: ${1}, attr_name: str = None):",
+            "\t\treturn super().get(parent, attr_name)",
+            ""
+        ]
+    },
+	"Auto-Load Imports":{
+		"prefix": ["al-import"],
+		"body": ["from .${1} import auto_load as al\nfrom .${1}auto_load.common import *\n\n$0"]
+	},
+	"Common Blender Types":{
+		"prefix": ["bt-"],
+		"body": ["bt.${1|Context,UILayout,Event,WindowManager|}$0"]
+	},
+	"Auto-Load UI Options":{
+		"prefix": ["al-ui"],
+		"body": ["al.${1|UIOptionsProp,UIOptionsOperator,UIIcon|}(${2:icon=al.BIcon.}$0)"]
+	},
+	"Auto-Load Icon":{
+		"prefix": ["al-ic"],
+		"body": ["al.BIcon.$0"]
+	},
+    "Auto-Load Enum":{
+        "prefix": ["al-enum"],
+        "body": [
+            "class ${1:NewStaticEnum}(al.BStaticEnum):",
+            "",
+            "\t${2:FIRST} = dict(n='${3:First}', d='${4:First Item Description}')",
+            "\t${5:SECOND} = dict(n='${6:Second}', d='${7:Second Item Description}')$0"
+        ]
+    }
+}

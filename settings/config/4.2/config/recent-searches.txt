@@ -1,0 +1,209 @@
+   Diamond
+Shader ▸ Translucent BSDF
+Shader ▸ Emission
+   Chunky Concrete
+ 0 Diamond
+   Hologram
+   Render Result
+Output ▸ Composite
+   Viewer Node
+Color ▸ Adjust ▸ RGB Curves
+Color ▸ Adjust ▸ Brightness/Contrast
+Light ▸ Area
+Texture ▸ Brick Texture
+Vector ▸ Mapping
+Empty ▸ Cube
+Mesh ▸ Primitives ▸ Mesh Line
+Instance Rotation ▸ Rotation
+Combine XYZ ▸ Vector
+Generate ▸ Remesh
+Generate ▸ Mesh to Volume
+Deform ▸ Volume Displace
+Metaball ▸ Ball
+Filter ▸ Denoise
+Add Modifier ▸ Geometry Nodes
+  myGeometryNode
+0 anotherGN
+Curve ▸ Read ▸ Endpoint Selection
+Curve ▸ Topology ▸ Curve of Point
+Curve ▸ Operations ▸ Curve to Points
+Texture ▸ Gradient Texture
+Mesh ▸ Cylinder
+   Material.002
+Mesh ▸ Primitives ▸ Grid
+velocity
+v
+Point ▸v|Vector
+Utilities ▸ Vector ▸ Separate XYZ
+Simulation ▸ Simulation Zone
+Converter ▸ Map Range
+Input ▸ Object Info
+Curve ▸ Operations ▸ Resample Curve
+Curve ▸ Write ▸ Set Curve Radius
+Utilities ▸ Random Value
+Group ▸ Rope Radius
+Mesh ▸ Primitives ▸ Mesh Circle
+Mesh ▸ Topology ▸ Edges of Vertex
+Mesh ▸ Operations ▸ Mesh to Volume
+Point ▸ Distribute Points in Volume
+Geometry ▸ Operations ▸ Merge by Distance
+Utilities ▸ Switch
+Input ▸ Scene ▸ Scene Time
+Geometry ▸ Operations ▸ Separate Components
+Curve ▸ Operations ▸ Curve to Mesh
+Curve ▸ Primitives ▸ Curve Circle
+Input ▸ Attribute
+ 0 Orbs
+Utilities ▸ Color ▸ Color Ramp
+Point ▸color|Color
+Group Input
+Group Input ▸Orb Radius
+Utilities ▸ Math ▸ Boolean Math
+Geometry ▸ Read ▸ Index
+   Lines
+color2
+color
+   Orbs
+Deform ▸ Displace
+F addon_add_object.py
+F Text
+F addon_add_object.py.001
+Generate ▸ Bevel
+Shader ▸ Transparent BSDF
+ 0 Shader Ball JL 01
+Shader ▸ Glass BSDF
+Shader ▸ Background
+  Camera.001
+Volume ▸ Empty
+Mesh ▸ Cone
+  light_camera
+Generate ▸ Decimate
+Generate ▸ Mirror
+Vector ▸ Displacement
+Texture ▸ Voronoi Texture
+Input ▸ Fresnel
+Converter ▸ Mix
+Input ▸ Geometry
+Light ▸ Sun
+Add ▸ Camera
+  Camera
+  main_camera
+Utilities ▸ Matrix ▸ Transform Point
+Instances ▸ Instance Transform
+Texture ▸ Environment Texture
+Utilities ▸ Math ▸ Mix
+Utilities ▸ Vector ▸ Mix Vector
+Mesh ▸ Primitives ▸ Cylinder
+v0
+v1
+Utilities ▸ Vector ▸ Vector Rotate
+Mesh ▸ Topology ▸ Vertex of Corner
+Geometry ▸ Read ▸ Named Attribute
+Edge ▸v1|Vector
+Edge ▸v0|Vector
+Mesh ▸ Operations ▸ Split Edges
+Mesh ▸ Read ▸ Edge Vertices
+Mesh ▸ Math Function ▸ Triangle
+Generate ▸ Wireframe
+Output ▸ Viewer
+Filter ▸ Glare
+   inner triangle
+  Inner triangle
+Vector ▸ Vector Rotate
+Empty ▸ Sphere
+  Scene.002
+  Scene.001
+  Scene
+Output ▸ File Output
+Input ▸ Scene ▸ Render Layers
+  night
+  day
+  mask
+   Texture
+   Material.001
+Texture ▸ Noise Texture
+Color ▸ Mix Color
+Shader ▸ Mix Shader
+  Plane
+Utilities ▸ Rotation ▸ Rotate Vector
+Mesh ▸ Operations ▸ Extrude Mesh
+Material ▸ Material Selection
+ 0 clip base
+   sphere
+Shader ▸ Principled BSDF
+Mesh ▸ Operations ▸ Mesh to Points
+Instances ▸ Instance on Points
+  laser
+  nucleo
+Geometry ▸ Read ▸ Normal
+Utilities ▸ Deprecated ▸ Align Euler to Vector
+Utilities ▸ Rotation ▸ Align Rotation to Vector
+Converter ▸ Color Ramp
+Geometry ▸ Operations ▸ Transform Geometry
+  Geometry Nodes
+ 0 Material
+Instances ▸ Instance Rotation
+Instances ▸ Rotate Instances
+Mesh ▸ Cube
+Mesh ▸ Operations ▸ Subdivide Mesh
+  lasers
+  sphere
+Point ▸ Points
+Mesh ▸ Sample ▸ Sample Nearest Surface
+Material ▸ Set Material
+   bar
+Mesh ▸ Primitives ▸ Cube
+Geometry ▸ Write ▸ Set Position
+Geometry ▸ Sample ▸ Sample Index
+Geometry ▸ Join Geometry
+Geometry ▸ Read ▸ Position
+Geometry ▸ Read ▸ ID
+Geometry ▸ Sample ▸ Index of Nearest
+Empty ▸ Plain Axes
+  Empty
+distance
+Utilities ▸ Repeat Zone
+Attribute ▸ Domain Size
+Geometry ▸ Sample ▸ Sample Nearest
+Attribute ▸ Store Named Attribute
+Attribute ▸ Capture Attribute
+Utilities ▸ Math ▸ Math
+dis
+dist
+Curve ▸ Sample ▸ Sample Curve
+Instances ▸ Set Instance Transform
+Geometry ▸ Sample ▸ Geometry Proximity
+Instances ▸ Instance Scale
+Scale Instances ▸ Instances
+Utilities ▸ Math ▸ Map Range
+Utilities ▸ Math ▸ Compare
+Mesh ▸ Grid
+Curve ▸ Primitives ▸ Curve Line
+Mesh ▸ Primitives ▸ Ico Sphere
+Mesh ▸ Ico Sphere
+  Icosphere
+Utilities ▸ Math ▸ Clamp
+Utilities ▸ Rotation ▸ Euler to Rotation
+Mesh ▸ Plane
+Geometry ▸ Operations ▸ Delete Geometry
+Geometry ▸ Sample ▸ Raycast
+Input ▸ Scene ▸ Object Info
+  Cube
+Generate ▸ Subdivision Surface
+Utilities ▸ Vector ▸ Combine XYZ
+   nucleo
+Utilities ▸ Vector ▸ Vector Math
+Group ▸ Group Input
+Input ▸ Constant ▸ Rotation
+Transform Geometry ▸ Geometry
+Mesh ▸ Write ▸ Set Shade Smooth
+   clip emission
+  clip_1
+  clip_2
+   clip base
+
+  clip_3
+Converter ▸ Vector Math
+Converter ▸ Math
+Input ▸ Texture Coordinate
+Converter ▸ Separate XYZ

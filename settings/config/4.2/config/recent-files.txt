@@ -1,0 +1,20 @@
+/Users/adriano/Soul Drive/projects/cg/blender/post_027/post_027_animation_01.blend
+/Users/adriano/Soul Drive/projects/cg/blender/post_027/post_027_animation.blend
+/Users/adriano/Soul Drive/projects/cg/blender/post_027/post_027.blend
+/Users/adriano/Soul Drive/projects/cg/blender/post_026/post_026.blend
+/Users/adriano/Desktop/vector.blend
+/Users/adriano/Soul Drive/projects/cg/blender/post_020/post_020.blend
+/Users/adriano/Soul Drive/projects/cg/blender/post_021/post_021.blend
+/Users/adriano/Soul Drive/projects/cg/blender/post_022/post_022.blend
+/Users/adriano/Soul Drive/projects/cg/blender/post_023/post_023.blend
+/Users/adriano/Soul Drive/projects/cg/blender/settings/resources/asset_library/assets/shader_ball.blend
+/Users/adriano/Soul Drive/projects/cg/blender/settings/resources/asset_library/materials/materials.blend
+/Users/adriano/Soul Drive/projects/cg/blender/settings/resources/asset_library/hdri/hdri.blend
+/Users/adriano/Soul Drive/projects/cg/blender/settings/resources/asset_library/assets/light_set.blend
+/Applications/Blender.app/Contents/Resources/4.2/datafiles/assets/geometry_nodes/smooth_by_angle.blend
+/Users/adriano/Soul Drive/projects/cg/blender/settings/resources/asset_library/materials/shader-ball-jl-01/source/Sketchfab_2022_11_08_17_38_57.blend
+/Users/adriano/Soul Drive/projects/cg/blender/settings/resources/asset_library/textures/textures.blend
+/Users/adriano/Soul Drive/projects/cg/blender/settings/resources/asset_library/assets/lookdev_light_set.blend
+/Users/adriano/Soul Drive/projects/cg/blender/settings/resources/asset_library/textures/worn_brick_floor_4k.blend/worn_brick_floor_4k.blend
+/Users/adriano/Soul Drive/projects/cg/blender/settings/resources/asset_library/materials/shader_ball.blend
+/Users/adriano/Desktop/shader_ball.blend
