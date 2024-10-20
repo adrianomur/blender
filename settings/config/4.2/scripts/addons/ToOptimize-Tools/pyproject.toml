@@ -1,0 +1,19 @@
+[tool.pyright]
+
+reportMissingImports = true
+reportMissingTypeStubs = false
+reportGeneralTypeIssues = "error"
+reportOptionalMemberAccess = true
+reportOptionalSubscript = true
+reportUnknownVariableType = false
+reportUnknownMemberType = false
+reportUnknownArgumentType = false
+reportAttributeAccessIssue = false
+reportTypeCommentUsage = true
+reportMissingDocstrings = "error"
+
+
+pythonVersion = "3.11"
+pythonPlatform = "Windows"
+
+
