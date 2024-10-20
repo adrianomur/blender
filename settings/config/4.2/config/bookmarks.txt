@@ -1,12 +1,12 @@
 [Bookmarks]
 [Recent]
-/Users/adriano/Soul Drive/projects/cg/blender/post_027/
-/Users/adriano/Soul Drive/projects/cg/blender/post_027/IN THE MIDST OF BIAS [OCTOBER 2024]/
+/Users/adriano/dev/blender/
+/Users/adriano/dev/blender/compositing/render_layers/test/
 /Users/adriano/Desktop/
-/Users/adriano/Downloads/Sanctus Library/
-/Users/adriano/Soul Drive/projects/cg/blender/post_026/renders/
-/Users/adriano/Soul Drive/projects/cg/blender/settings/resources/hdri/
-/Users/adriano/Soul Drive/projects/cg/blender/settings/resources/asset_library/hdri/
-/Users/adriano/Soul Drive/projects/cg/blender/post_026/
-/Users/adriano/Downloads/
-/Volumes/home/applications/blender_addons/
+/Users/adriano/Desktop/passes/passes/
+/Users/adriano/Desktop/passes/
+/Users/adriano/Soul Drive/projects/cg/blender/settings/blender_addons/
+/Users/adriano/Soul Drive/projects/cg/blender/posts/post_031/
+/Users/adriano/Soul Drive/projects/cg/blender/posts/post_020/
+/Users/adriano/Soul Drive/projects/cg/blender/posts/post_021/
+/Users/adriano/Soul Drive/projects/cg/blender/posts/post_022/
