@@ -1,14 +1,10 @@
 """
-import sys
-import importlib
-sys.path.append('/Users/adriano/dev/blender')
-import compositing
-importlib.reload(compositing)
-from compositing.render_layers import render_layers
+import modules.compositing.render_layers.render_layers as render_layers
 render_layers.create_outputs_on_selected()
 """
+
 import bpy
-from ..utilities import node
+from modules.compositing.utilities import node
 
 
 def create_outputs_on_selected():
