@@ -1,47 +1,45 @@
+import os
 import bpy
+from numpy.exceptions import VisibleDeprecationWarning
+
 from modules.nodes import scene_lib
 from modules.nodes import compositing_lib
 from modules.nodes import render_layer_lib
 from modules.nodes import node_lib
+from modules.nodes.scene_lib import get_node_tree
+
+from modules.nodes.constants import RENDER_FOLDER
+from modules.nodes.constants import VIEW_LAYER_COLLECTION_PREFIX
+from modules.nodes.constants import LIGHT_VIEW_LAYER_COLLECTION_PREFIX
 
 
-def create_output_node(render_layer):
-    tree = bpy.context.scene.node_tree
-    output_file_node = tree.nodes.new('CompositorNodeOutputFile')
-    output_file_node.location.x = render_layer.location.x + 500
-    output_file_node.location.y = render_layer.location.y
-    output_file_node.label = f'output_{render_layer.layer}'
-    output_file_node.base_path = f'///{render_layer.layer}/'
-    output_file_node.width = 300
-
-    # connect Render Layer node to output
-    index = 0
-    for output in render_layer.outputs:
-        if output.is_unavailable:
-            continue
-        if output.name not in ['Image']:
-            output_file_node.file_slots.new(name=output.name)
-        tree.links.new(output, output_file_node.inputs[index])
-        index += 1
-    return output_file_node
-
-
-def create_render_layer_node(name: str, render_layer_name: str = None):
+def create_output_node_from_render_layer(render_layer):
     """
     from importlib import reload
     import modules.compositing.render_layers.render_layers as render_layers
     reload(render_layers)
-    render_layers.create_render_layer_node('render-layer-node-name', 'render layer to select')
+    render_layers.create_output_node('render-layer-node-name')
     """
-    tree = bpy.context.scene.node_tree
-    render_layer_node = tree.nodes.new('CompositorNodeRLayers')
-    render_layer_node.label = name
-    render_layers_names = [node.name for node in render_layer_lib.get_render_layers()]
-    if render_layer_name and render_layer_name in render_layers_names:
-        render_layer_node.layer = render_layer_name
-    return render_layer_node
+    tree = get_node_tree()
+    output_file_node_name = render_layer.layer
+    output_file_layer_slots = [output.name for output in render_layer.outputs if not output.is_unavailable]
+    output_file_base_path = os.path.join(RENDER_FOLDER, output_file_node_name)
+    output_file_node = compositing_lib.get_or_create_output_file_node(name=output_file_node_name,
+                                                                      base_path=f'///{output_file_base_path}/',
+                                                                      layer_slots=output_file_layer_slots)
+    output_file_node.location.x = render_layer.location.x + 500
+    output_file_node.location.y = render_layer.location.y
+
+    for output_plug in render_layer.outputs:
+        for index, input_plug in enumerate(output_file_node.file_slots):
+            if output_plug.name == input_plug.path:
+                tree.links.new(output_plug, output_file_node.inputs[index])
+                break
+
+    return output_file_node
 
 
+@node_lib.align_nodes
 def create_outputs_from_render_layers(selected: bool = True):
     """
     from importlib import reload
@@ -51,33 +49,67 @@ def create_outputs_from_render_layers(selected: bool = True):
     """
     render_layer_nodes = compositing_lib.get_nodes(['R_LAYERS'], selected=selected)
     for render_layer in render_layer_nodes:
-        create_output_node(render_layer)
+        create_output_node_from_render_layer(render_layer)
 
-@node_lib.align_nodes
-def create_render_layers_from_collections():
+
+def get_or_create_view_layer(view_layer_name):
+    scene = scene_lib.get_current_scene()
+    view_layers =  render_layer_lib.get_view_layers(scene)
+    view_layer = [view_layer for view_layer in view_layers if view_layer.name == view_layer_name]
+    return view_layer[0] if view_layer else scene.view_layers.new(name=view_layer_name)
+
+
+def create_view_layer_and_render_layer_node(name):
     """
     from importlib import reload
     import modules.compositing.render_layers.render_layers as render_layers
     reload(render_layers)
-    render_layers.create_render_layers_from_collections()
+    render_layers.create_render_layers_setup()
     """
-    current_scene = scene_lib.get_current_scene()
-    current_render_layers =  render_layer_lib.get_render_layers(current_scene)
-    render_layer_collections = scene_lib.get_render_layer_collections()
+    view_layer = get_or_create_view_layer(name)
+    render_layer_node = compositing_lib.get_or_create_render_layer_node(name=name, render_layer_name=name)
+    return view_layer, render_layer_node
+
+
+@node_lib.align_nodes
+def create_view_layers_from_collections():
+    """
+    from importlib import reload
+    import modules.compositing.render_layers.render_layers as render_layers
+    reload(render_layers)
+    render_layers.create_view_layers_from_collections()
+    """
+    view_layer_collections = scene_lib.get_view_layers_from_collections()
+    light_view_layer_collections = scene_lib.get_light_view_layers_from_collections()
+    non_view_layer_collections = [collection for collection in scene_lib.get_collections() if collection not in (view_layer_collections + light_view_layer_collections)]
 
     nodes = []
-    for collection in render_layer_collections:
+    for view_layer_collection in view_layer_collections:
+        view_layer_collection_name = view_layer_collection.name.lstrip(VIEW_LAYER_COLLECTION_PREFIX)
+        view_layer, render_layer_node = create_view_layer_and_render_layer_node(view_layer_collection_name)
 
-        selected_render_layer_node = None
-        for render_layer in current_render_layers:
-            if render_layer.name == collection.name:
-                selected_render_layer_node = render_layer
+        collection_names = [collection.name for collection in non_view_layer_collections + [view_layer_collection]]
+        scene_lib.enable_exclude_only_collections(view_layer, collection_names=collection_names)
 
-        selected_render_layer_node = selected_render_layer_node or current_scene.view_layers.new(name=collection.name)
-        for layer_collection in selected_render_layer_node.layer_collection.children:
-            layer_collection.exclude = not (collection.name == layer_collection.name)
+        output_node = create_output_node_from_render_layer(render_layer_node)
+        nodes.append((render_layer_node, output_node))
 
-        selected_render_layer_node = create_render_layer_node(f'render_layer_{selected_render_layer_node.name}', selected_render_layer_node.name)
-        output_node = create_output_node(selected_render_layer_node)
-        nodes.append((selected_render_layer_node, output_node))
+        frame_nodes = []
+        frame_nodes.extend((render_layer_node, output_node))
+
+        for light_view_layer_collection in light_view_layer_collections:
+            light_view_layer_collection_name = light_view_layer_collection.name.lstrip(LIGHT_VIEW_LAYER_COLLECTION_PREFIX)
+            view_layer, render_layer_light_setup_node = create_view_layer_and_render_layer_node(f'{view_layer_collection_name}_{light_view_layer_collection_name}')
+
+            collection_names = [collection.name for collection in non_view_layer_collections + [view_layer_collection, light_view_layer_collection]]
+            scene_lib.enable_exclude_only_collections(view_layer, collection_names=collection_names)
+            scene_lib.enable_indirect_only_collections(view_layer, collection_names=[view_layer_collection.name])
+
+            light_setup_output_node = create_output_node_from_render_layer(render_layer_light_setup_node)
+
+            nodes.append((render_layer_light_setup_node, light_setup_output_node))
+            frame_nodes.extend((render_layer_light_setup_node, light_setup_output_node))
+
+        compositing_lib.create_frame(view_layer_collection_name, frame_nodes)
+
     return nodes
