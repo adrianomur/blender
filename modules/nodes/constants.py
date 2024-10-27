@@ -8,3 +8,5 @@ RENDER_LAYER_PREFIX = 'RenderLayer'
 RENDER_FOLDER = 'renders'
 
 SPACING_X, SPACING_Y = 300, 300
+
+RENDER_TEMPLATE_PATH = '///{folder}/{file_name}'

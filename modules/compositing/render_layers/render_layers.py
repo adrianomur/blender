@@ -11,9 +11,10 @@ from modules.nodes.scene_lib import get_node_tree
 from modules.nodes.constants import RENDER_FOLDER
 from modules.nodes.constants import VIEW_LAYER_COLLECTION_PREFIX
 from modules.nodes.constants import LIGHT_VIEW_LAYER_COLLECTION_PREFIX
+from modules.nodes.constants import RENDER_TEMPLATE_PATH
 
 
-def create_output_node_from_render_layer(render_layer):
+def create_output_node_from_render_layer(render_layer, existing_output_name=None):
     """
     from importlib import reload
     import modules.compositing.render_layers.render_layers as render_layers
@@ -25,7 +26,7 @@ def create_output_node_from_render_layer(render_layer):
     output_file_layer_slots = [output.name for output in render_layer.outputs if not output.is_unavailable]
     output_file_base_path = os.path.join(RENDER_FOLDER, output_file_node_name)
     output_file_node = compositing_lib.get_or_create_output_file_node(name=output_file_node_name,
-                                                                      base_path=f'///{output_file_base_path}/',
+                                                                      base_path=f'///{output_file_base_path}.',
                                                                       layer_slots=output_file_layer_slots)
     output_file_node.location.x = render_layer.location.x + 500
     output_file_node.location.y = render_layer.location.y
@@ -72,25 +73,36 @@ def create_view_layer_and_render_layer_node(name):
 
 
 @node_lib.align_nodes
-def create_view_layers_from_collections():
+def create_view_layers_from_collections(one_output: bool = False):
     """
     from importlib import reload
     import modules.compositing.render_layers.render_layers as render_layers
     reload(render_layers)
     render_layers.create_view_layers_from_collections()
     """
+    # LR_ collections
     view_layer_collections = scene_lib.get_view_layers_from_collections()
+
+    # LS_ collections
     light_view_layer_collections = scene_lib.get_light_view_layers_from_collections()
+
+    # Non-view layer collection
     non_view_layer_collections = [collection for collection in scene_lib.get_collections() if collection not in (view_layer_collections + light_view_layer_collections)]
 
     nodes = []
     for view_layer_collection in view_layer_collections:
+
+        # Remove LR_ from collection name
         view_layer_collection_name = view_layer_collection.name.lstrip(VIEW_LAYER_COLLECTION_PREFIX)
+
+        # Create view layer and render layer node
         view_layer, render_layer_node = create_view_layer_and_render_layer_node(view_layer_collection_name)
 
+        # Exclude the other collections
         collection_names = [collection.name for collection in non_view_layer_collections + [view_layer_collection]]
         scene_lib.enable_exclude_only_collections(view_layer, collection_names=collection_names)
 
+        # Create output node from render layer node
         output_node = create_output_node_from_render_layer(render_layer_node)
         nodes.append((render_layer_node, output_node))
 
@@ -98,13 +110,21 @@ def create_view_layers_from_collections():
         frame_nodes.extend((render_layer_node, output_node))
 
         for light_view_layer_collection in light_view_layer_collections:
+
+            # Remove LS_ from collection name
             light_view_layer_collection_name = light_view_layer_collection.name.lstrip(LIGHT_VIEW_LAYER_COLLECTION_PREFIX)
+
+            # Create view layer and render layer node
             view_layer, render_layer_light_setup_node = create_view_layer_and_render_layer_node(f'{view_layer_collection_name}_{light_view_layer_collection_name}')
 
+            # Exclude current RL_, current LS_ and non-view collections
             collection_names = [collection.name for collection in non_view_layer_collections + [view_layer_collection, light_view_layer_collection]]
             scene_lib.enable_exclude_only_collections(view_layer, collection_names=collection_names)
+
+            # Indirect only on current RL_ collection
             scene_lib.enable_indirect_only_collections(view_layer, collection_names=[view_layer_collection.name])
 
+            # Create output node from the light setup node
             light_setup_output_node = create_output_node_from_render_layer(render_layer_light_setup_node)
 
             nodes.append((render_layer_light_setup_node, light_setup_output_node))
