@@ -119,7 +119,7 @@ class RenderGroup:
             plugs.extend(render_item.plugs.keys())
         output_file_node = compositing_lib.get_or_create_output_file_node(name=self.collection.name,
                                                                           label=self.name,
-                                                                          base_path=f'///{self.name}.',
+                                                                          base_path=f'///renders/{self.name}/{self.name}.',
                                                                           layer_slots=plugs,
                                                                           clear_slots=True)
         outputs.append(output_file_node)
