@@ -15,6 +15,12 @@ def get_collections():
 
 
 class RenderItem:
+    """
+    from importlib import reload
+    from modules.compositing.render_layers import RenderSetup
+    reload(RenderSetup)
+    render_setup = RenderSetup.RenderSetup()
+    """
 
     def __init__(self, name, collection, group):
         self.collection = collection
